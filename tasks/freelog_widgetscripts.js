@@ -8,43 +8,29 @@
 
 'use strict';
 
+var jquery = require('jquery');
+var jsdom = require('jsdom');
+
 module.exports = function(grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
+  grunt.registerTask('build-index-page', 'create index page for testing the widget', function(){
+    var jquery = require ('jquery');
+    var config = grunt.config('build_index_page');
+    var widget_html = grunt.file.read(config.widget_file);
+    var container = grunt.file.read(config.container_file);
+    var dest = config.dest;
 
-  grunt.registerMultiTask('freelog_widgetscripts', 'tasks and tools for you to create an awesome freelog widget', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
+    jsdom.env({
+      html:container,
+      src:[jquery],
+      done: function (err, window) {
+        var $ = window.$;
+        $("#widgets").html(widget_html);
+        var html_export = "<!DOCTYPE html>\n<html>\n" + $("html").html() + "\n</html>";
+        grunt.file.write(dest, html_export);
+      }
     });
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
-
-      // Handle options.
-      src += options.punctuation;
-
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
-    });
   });
 
 };
