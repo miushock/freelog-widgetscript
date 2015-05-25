@@ -1,5 +1,5 @@
 /*
- * freelog-widgetscripts
+ * freelog-widgetscript
  * https://github.com/miushock/freelog-widgetscripts
  *
  * Copyright (c) 2015 Miushock
