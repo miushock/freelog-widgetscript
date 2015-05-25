@@ -1,7 +1,7 @@
 {
   "name": "freelog-widgetscripts",
   "description": "tasks and tools for you to create an awesome freelog widget",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/miushock/freelog-widgetscripts",
   "author": {
     "name": "Miushock",
@@ -26,7 +26,7 @@
   "scripts": {
     "test": "grunt test"
   },
-  "dependencies":{
+  "dependencies": {
     "jquery": "~2.1.4",
     "jsdom": "~3.0.0"
   },
