@@ -1,23 +1,23 @@
 {
-  "name": "freelog-widgetscripts",
+  "name": "freelog-widgetscript",
   "description": "tasks and tools for you to create an awesome freelog widget",
   "version": "0.0.2",
-  "homepage": "https://github.com/miushock/freelog-widgetscripts",
+  "homepage": "https://github.com/miushock/freelog-widgetscript",
   "author": {
     "name": "Miushock",
     "email": "miushock@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/miushock/freelog-widgetscripts.git"
+    "url": "git://github.com/miushock/freelog-widgetscript.git"
   },
   "bugs": {
-    "url": "https://github.com/miushock/freelog-widgetscripts/issues"
+    "url": "https://github.com/miushock/freelog-widgetscript/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/miushock/freelog-widgetscripts/blob/master/LICENSE-MIT"
+      "url": "https://github.com/miushock/freelog-widgetscript/blob/master/LICENSE-MIT"
     }
   ],
   "engines": {
