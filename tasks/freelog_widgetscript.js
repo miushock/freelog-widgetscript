@@ -1,10 +1,10 @@
 /*
- * freelog-widgetscripts
- * https://github.com/miushock/freelog-widgetscripts
- *
- * Copyright (c) 2015 Miushock
- * Licensed under the MIT license.
- */
+* freelog-widgetscripts
+* https://github.com/miushock/freelog-widgetscripts
+*
+* Copyright (c) 2015 Miushock
+* Licensed under the MIT license.
+*/
 
 'use strict';
 
@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build-index-page', 'create index page for testing the widget', function(){
     var config = grunt.config('build_index_page');
-    var widget_html = grunt.file.read(config.widget_file);
+    var widget_html = grunt.file.read(config.widget_html);
     var container = grunt.file.read(config.container_file);
     var dest = config.dest;
 
@@ -35,5 +35,30 @@ module.exports = function(grunt) {
     });
 
   });
+
+  grunt.registerTask('submit-widget', 'submit-widget to freelog.co', function(){
+    var widget_html = grunt.file.read(config.widget_html);
+    var widget_style = grunt.file.read(config.widget_css);
+    var widget_script = grunt.file.read(config.widget_js);
+
+    var author_email = config.author_email;
+
+    var widget_object = JSON.stringify({html:widget_html, css:widget_style, javascript:widget_script});
+
+    var formData = {
+      resource_type: 'widget',
+      owner: author;
+      meta: {},
+      mime_type: 'application/json',
+      sharing_policy: {},
+      content: widget_object
+    }
+
+    request.post({url:'http://freelog.co/resources.json', formData: formData} function (err) {
+      if (err) {
+        return console.error('upload failed:', err);
+      }
+    });
+  }):
 
 };
