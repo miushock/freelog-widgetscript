@@ -37,6 +37,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('submit-widget', 'submit-widget to freelog.co', function(){
+    var config = grunt.config('submit_widget');
     var widget_html = grunt.file.read(config.widget_html);
     var widget_style = grunt.file.read(config.widget_css);
     var widget_script = grunt.file.read(config.widget_js);
@@ -47,18 +48,18 @@ module.exports = function(grunt) {
 
     var formData = {
       resource_type: 'widget',
-      owner: author;
+      owner: author_email,
       meta: {},
       mime_type: 'application/json',
       sharing_policy: {},
       content: widget_object
     }
 
-    request.post({url:'http://freelog.co/resources.json', formData: formData} function (err) {
+    request.post({url:'http://freelog.co/resources.json', formData: formData} ,function (err) {
       if (err) {
         return console.error('upload failed:', err);
       }
     });
-  }):
+  });
 
 };
