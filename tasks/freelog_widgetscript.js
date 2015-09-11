@@ -11,6 +11,7 @@
 var grunt = require('grunt');
 var jquery = grunt.file.read('./node_modules/jquery/dist/jquery.min.js');
 var jsdom = require('jsdom');
+var request = require('request');
 
 module.exports = function(grunt) {
 
@@ -28,7 +29,8 @@ module.exports = function(grunt) {
           grunt.fail.warn(err);
         }
         var $ = window.$;
-        $("#widgets").html(widget_html);
+        var widget= $(widget_html);
+        $('body').append(widget);
         var html_export = "<!DOCTYPE html>\n<html>\n" + $("html").html() + "\n</html>";
         grunt.file.write(dest, html_export);
       }
@@ -37,29 +39,44 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('submit-widget', 'submit-widget to freelog.co', function(){
+  //make async
+    var done = this.async();
+
     var config = grunt.config('submit_widget');
     var widget_html = grunt.file.read(config.widget_html);
-    var widget_style = grunt.file.read(config.widget_css);
-    var widget_script = grunt.file.read(config.widget_js);
+    var widget_style = grunt.file.read(config.widget_style);
+    var widget_script = grunt.file.read(config.widget_script);
 
     var author_email = config.author_email;
 
     var widget_object = JSON.stringify({html:widget_html, css:widget_style, javascript:widget_script});
 
-    var formData = {
-      resource_type: 'widget',
-      owner: author_email,
-      meta: {},
-      mime_type: 'application/json',
-      sharing_policy: {},
-      content: widget_object
+    var resource = {
+      resource: {
+        resource_type: 'widget',
+        meta: JSON.stringify({shim_dependencies: config.shim_dependencies}),
+        name: config.name,
+        mime_type: 'application/json',
+        sharing_policy: '{}',
+        content: widget_object
+      }
     }
 
-    request.post({url:'http://freelog.co/resources.json', formData: formData} ,function (err) {
-      if (err) {
-        return console.error('upload failed:', err);
-      }
-    });
+    request(
+      {
+        method:'post',
+        uri:'http://freelog.co:3000/resources.json', 
+        json:true,
+        body:resource
+      } ,
+      function (err, response, body) {
+        if (err) {
+          console.error('upload failed:', err);
+          done();
+        }
+        done();
+      })
+      .auth(config.auth_email,config.auth_pw);
   });
 
 };
