@@ -79,4 +79,43 @@ module.exports = function(grunt) {
       .auth(config.auth_email,config.auth_pw);
   });
 
+  grunt.registerTask('submit-pagebuild', 'submit a page build to freelog.co', function(){
+    var done = this.async();
+
+    var config = grunt.config('submit_widget');
+    var pb_html = grunt.file.read(config.widget_html);
+    var pb_style = grunt.file.read(config.widget_style);
+    var pb_script = grunt.file.read(config.widget_script);
+    var pb_widgets = config.widgets;
+    var author_email = config.author_email;
+
+    var pb_object = JSON.stringify({widgets:pb_widgets, html:widget_html, css:widget_style, javascript:widget_script});
+
+    var resource = {
+      resource: {
+        resource_type: 'page_build',
+        meta: {},
+        name: config.name,
+        mime_type: 'application/json',
+        sharing_policy: '{}',
+        content: pb_object
+      }
+    }
+
+    request(
+      {
+        method:'post',
+        uri:'http://freelog.co:3000/resources.json', 
+        json:true,
+        body:resource
+      } ,
+      function (err, response, body) {
+        if (err) {
+          console.error('upload failed:', err);
+          done();
+        }
+        done();
+      })
+      .auth(config.auth_email,config.auth_pw);
+  });
 };
