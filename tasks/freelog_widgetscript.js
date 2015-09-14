@@ -82,14 +82,13 @@ module.exports = function(grunt) {
   grunt.registerTask('submit-pagebuild', 'submit a page build to freelog.co', function(){
     var done = this.async();
 
-    var config = grunt.config('submit_widget');
-    var pb_html = grunt.file.read(config.widget_html);
-    var pb_style = grunt.file.read(config.widget_style);
-    var pb_script = grunt.file.read(config.widget_script);
+    var config = grunt.config('submit_pagebuild');
+    var pb_layout = grunt.file.read(config.layout);
+    var pb_style = grunt.file.read(config.style);
     var pb_widgets = config.widgets;
     var author_email = config.author_email;
 
-    var pb_object = JSON.stringify({widgets:pb_widgets, html:widget_html, css:widget_style, javascript:widget_script});
+    var pb_object = JSON.stringify({widgets:pb_widgets, layout:pb_layout, css:pb_style});
 
     var resource = {
       resource: {
